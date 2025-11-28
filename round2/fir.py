@@ -2,15 +2,7 @@ import collections
 import math
 
 def get_minimum_holes():
-    """
-    Solves the Minimum Holes problem by:
-    1. Discretizing the space.
-    2. Using BFS to identify and count all distinct partitions (P).
-    3. Building the Partition Adjacency Graph.
-    4. Solving the Maximum Independent Set (MIS) on the graph.
-    5. Minimum Holes = P - MIS Size.
-    6. Implementing a geometric check for "Invalid" (incomplete/non-rectangular partitions).
-    """
+    
     try:
         # Read N_box and M_box (box dimensions)
         line = input().split()
@@ -48,13 +40,11 @@ def get_minimum_holes():
     W = len(sorted_x) - 1 # Grid columns
     H = len(sorted_y) - 1 # Grid rows
 
-    # 1 if there's a partition segment, 0 otherwise
-    # horizontal_lines[i][j]: seg at y=sorted_y[j] between x=sorted_x[i] and x=sorted_x[i+1]
-    # vertical_lines[i][j]: seg at x=sorted_x[i] between y=sorted_y[j] and y=sorted_y[j+1]
+    
     horizontal_lines = [[0] * (H + 1) for _ in range(W)]
     vertical_lines = [[0] * H for _ in range(W + 1)]
     
-    # --- Step 2: Populate the Grid ---
+
     for x1, y1, x2, y2 in partitions_input:
         nx1, nx2 = min(x1, x2), max(x1, x2)
         ny1, ny2 = min(y1, y2), max(y1, y2)
@@ -73,8 +63,6 @@ def get_minimum_holes():
                 if 0 <= i < W and 0 <= y_idx <= H:
                     horizontal_lines[i][y_idx] = 1
 
-    # --- Step 3: Identify, Validate, and Count Partitions (P) ---
-    
     # region_id_grid[i][j] stores the ID of the partition cell (i, j) belongs to
     region_id_grid = [[-1] * H for _ in range(W)]
     num_partitions = 0
@@ -113,17 +101,11 @@ def get_minimum_holes():
 
     # --- Validity Check (Incomplete Partitions) ---
     if N_lines > 0 and num_partitions == 1:
-        # If internal lines exist but only one partition is found, it must be Invalid 
-        # (incomplete/open partitions like Example 2).
         return "Invalid"
     
     if num_partitions == 0:
         return "Invalid"
         
-    # --- Step 4: Build Partition Adjacency Graph ---
-    
-    # The adjacency graph (G_adj) nodes are partitions (1 to P).
-    # An edge exists if they share a partition segment where a hole can be placed.
     adj = collections.defaultdict(set)
     
     for i in range(W):
@@ -145,19 +127,6 @@ def get_minimum_holes():
                     adj[r1].add(r2)
                     adj[r2].add(r1)
 
-    # --- Step 5: Solve Maximum Independent Set (MIS) ---
-    
-    # Since the partition graph of a rectangular grid is bipartite, MIS can be solved
-    # using Kőnig's theorem: MIS = |V| - Maximum Matching (MM).
-    # Since we use the adjacency graph, we use the property for bipartite graphs:
-    # MIS = |V| - Minimum Vertex Cover (MVC), and MVC = MM.
-    # Therefore, MIS = P - MM. This is equivalent to:
-    # Minimum Holes = P - MIS = MM (Maximum Matching)
-    
-    # We must find the Maximum Matching (MM) of the Partition Adjacency Graph (G_adj).
-    # The graph is the dual of the grid, which is bipartite.
-    
-    # 5a. Check if the Adjacency Graph is Bipartite (Coloring)
     color = {} # 0 or 1
     is_bipartite = True
     for start_node in range(1, num_partitions + 1):
@@ -176,16 +145,8 @@ def get_minimum_holes():
         if not is_bipartite: break
         
     if not is_bipartite:
-        # This would imply a non-rectangular partition or a cycle of odd length, 
-        # which should ideally be caught by the "Invalid" check, but it's a safety net.
-        # For simplicity, we assume this is handled by the initial check for this problem type.
         pass
 
-    # 5b. Find Maximum Bipartite Matching (using Hopcroft-Karp or augmenting paths)
-    
-    # We'll use a standard augmenting path DFS-based approach for maximum bipartite matching.
-    
-    # Create the two sets of the bipartite graph
     set_a = {node for node, c in color.items() if c == 0}
     set_b = {node for node, c in color.items() if c == 1}
     
@@ -205,11 +166,9 @@ def get_minimum_holes():
         if dfs_match(u, set()):
             max_matching_size += 1
 
-    # Final Result
-    # Minimum Holes = Maximum Matching Size (MM) in the partition adjacency graph.
     min_holes = max_matching_size
 
     return str(min_holes)
 
-# Execute the fully rewritten solver
+
 print(get_minimum_holes())
