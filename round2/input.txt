@@ -1,0 +1,80 @@
+
+
+Rubiverse
+Problem Description
+In the mystical land of Rubiverse, every puzzle master owns a custom 2×2 Rubik's Cube inscribed with random alphabets. The net layout of the cube is provided as input. Each face of the cube is identified by a single uppercase letter (A-Z) and contains 4 characters arranged in a 2×2 grid. Faces are ordered by scanning the net left to right, top to bottom. All six faces' characters are given together as one continuous string: the first 4 characters belong to the first face in the net layout, the next 4 to the second face, and so on. The 4 Characters are placed in row major on the face. When folded into a cube, the faces align perfectly and the three faces that meet at a corner form a code. Given a corner (three face labels), find and print the code formed by the three alphabets at that corner, in the same order as that of faces.
+
+Constraints
+Faces will be represented by upper case alphabets.
+Characters on face will be of lower case characters.
+
+Input
+The first four lines contain a 4×4 matrix showing the cube's net layout. Each cell has either an uppercase letter (A-Z) representing a face or a dot (.). Exactly six letters represent the six faces of the cube.
+
+The next line contains a string of lowercase alphabets representing all six face characters.
+
+The last line contains three uppercase letters representing the corner whose code must be found.
+
+Output
+Print the three alphabets (one from each of the given corner's faces) that meet at that corner when the cube is folded correctly.
+The alphabets must be printed in the same order as that of given faces .
+
+Time Limit (secs)
+1
+
+Examples
+Example 1
+
+Input
+
+.E..
+
+ABCD
+
+.F..
+
+....
+
+abcdefghijklmnopqrstuvwx
+
+ABE
+
+Output
+
+fic
+
+Explanation
+
+The given net layout of the cube is shown below.
+
+com.tcs.cv.automata.ei.middleware.DocxToHtmlConverter@6759f091:image1.png
+
+As you can see from the above net layout, if you close and cube and extract the FTR corner, you will get the code "fic"
+
+Example 2
+
+Input
+
+..FR
+
+.LD.
+
+..B.
+
+..T.
+
+zaqwsxedcvfrtgbnhyujmkio
+
+FTR
+
+Output
+
+aos
+
+Explanation
+
+The given net layout of the cube is shown below.
+
+com.tcs.cv.automata.ei.middleware.DocxToHtmlConverter@6759f091:image2.png
+
+As you can see from the above net layout, if you close and cube and extract the FTR corner, you will get the code "aos"
